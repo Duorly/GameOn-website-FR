@@ -10,7 +10,7 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
-const formData = document.querySelectorAll(".formData"); 
+const formData = document.querySelectorAll(".formData");
 const closeBtn = document.querySelector(".close");
 const submitBtn = document.querySelector(".btn-submit");
 const form = document.getElementById("reserve");
@@ -27,7 +27,7 @@ const lastError = document.getElementById("lastError");
 const email = document.getElementById("email");
 const emailError = document.getElementById("emailError");
 
-const birthdate = document.getElementById("birthdate"); 
+const birthdate = document.getElementById("birthdate");
 const birthdateError = document.getElementById("birthdateError");
 
 const quantity = document.getElementById("quantity");
@@ -39,16 +39,10 @@ const locationError = document.getElementById("locationError");
 const conditions = document.getElementById("checkbox1");
 const conditionsError = document.getElementById("conditionsError");
 
-
-const heroSection = document.querySelector('.hero-section');
-
+const heroSection = document.querySelector(".hero-section");
 
 // variable mobile media query
 let mediaQueryMobile = window.matchMedia("(max-width: 540px)");
-
-
-
-
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -57,7 +51,7 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 function launchModal() {
   modalbg.style.display = "block";
   // if mobile screen, heroSection doesn't appear
-  if(mediaQueryMobile.matches){
+  if (mediaQueryMobile.matches) {
     heroSection.style.display = "none";
   }
 }
@@ -67,109 +61,132 @@ closeBtn.addEventListener("click", closeModal);
 // close modal form
 function closeModal() {
   modalbg.style.display = "none";
-  if(mediaQueryMobile.matches){
+  if (mediaQueryMobile.matches) {
     heroSection.style.display = "block";
   }
+  // button close and confirmation message not displayed
+  closeBtnRed.style.display = "none";
+  confirmationMsg.style.display = "none";
+
+  form.style.display = "block";
+  submitBtn.style.display = "block";
+  form.reset();
+  first.value = "";
 }
 
 // button close and confirmation message not displayed
 closeBtnRed.style.display = "none";
 confirmationMsg.style.display = "none";
 
-let formOk = false;
-
 // inputs check + error message and its style
-function checkInputs(){
-  
+function checkInputs() {
+  let formOk = true;
   // if first.value is empty and doesn't respect regex name, or first.length is less than 2 characters
   // then error message is displayed
-  let verifName = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/;
-  if(verifName.exec(first.value) === null || first.length < 2) {
+  if (first.value.length < 2) {
+    firstError.style.display = "block";
     firstError.textContent = "Veuillez entrer 2 caractères minimum";
     firstError.style.color = "red";
     firstError.style.fontSize = "10px";
     first.style.borderColor = "red";
     first.style.borderWidth = "2px";
-    return formOk === false;
+    formOk = false;
   } else {
     firstError.style.display = "none";
     first.style = "default";
   }
 
-  if(verifName.exec(last.value) === null || last.length < 2) {
+  if (last.value.length < 2) {
+    lastError.style.display = "block";
     lastError.textContent = "Veuillez entrer 2 caractères minimum";
     lastError.style.color = "red";
     lastError.style.fontSize = "10px";
     last.style.borderColor = "red";
     last.style.borderWidth = "2px";
-    return formOk === false;
-  }  else {
+    formOk = false;
+  } else {
     lastError.style.display = "none";
     last.style = "default";
   }
 
   // if email doesn't correspond to regex => error
-  let verifEmail = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-  if(verifEmail.exec(email.value) === null) {
+  let verifEmail =
+    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,12})$/;
+  if (verifEmail.exec(email.value) === null) {
+    emailError.style.display = "block";
     emailError.textContent = "Veuillez renseigner votre adresse mail";
     emailError.style.color = "red";
     emailError.style.fontSize = "10px";
     email.style.borderColor = "red";
     email.style.borderWidth = "2px";
-    return formOk === false;
+    formOk = false;
   } else {
     emailError.style.display = "none";
     email.style = "default";
   }
 
-  if(!birthdate.value) {
-    birthdateError.textContent =  "Veuillez entrer votre date de naissance";
+  if (!birthdate.value) {
+    birthdateError.style.display = "block";
+    birthdateError.textContent = "Veuillez entrer votre date de naissance";
     birthdateError.style.color = "red";
     birthdateError.style.fontSize = "10px";
     birthdate.style.borderColor = "red";
     birthdate.style.borderWidth = "2px";
-    return formOk === false;
+    formOk = false;
   } else {
     birthdateError.style.display = "none";
     birthdate.style = "default";
   }
 
   // if quantity.value is empty or its value is not a number => error
-  if(quantity.value === "" || isNaN(quantity.value)) {
+  if (quantity.value === "" || isNaN(quantity.value)) {
+    quantityError.style.display = "block";
     quantityError.textContent = "Veuillez renseigner ce champ";
     quantityError.style.color = "red";
     quantityError.style.fontSize = "10px";
     quantity.style.borderColor = "red";
     quantity.style.borderWidth = "2px";
-    return formOk === false;
+    formOk = false;
   } else {
     quantityError.style.display = "none";
     quantity.style = "default";
   }
 
   //if one of the option is not checked => error
-  if(!(location2[0].checked || location2[1].checked || location2[2].checked || location2[3].checked || location2[4].checked || location2[5].checked)) {
+  if (
+    !(
+      location2[0].checked ||
+      location2[1].checked ||
+      location2[2].checked ||
+      location2[3].checked ||
+      location2[4].checked ||
+      location2[5].checked
+    )
+  ) {
+    locationError.style.display = "block";
     locationError.textContent = "Veuillez choisir une option";
     locationError.style.color = "red";
     locationError.style.fontSize = "10px";
-    return formOk === false;
+    formOk = false;
   } else {
     locationError.style.display = "none";
     location2.style = "default";
   }
 
-  if(!conditions.checked) { 
-    conditionsError.textContent = "Veuillez vérifier que vous avez accepté les termes et conditions";
+  if (!conditions.checked) {
+    conditionsError.style.display = "block";
+    conditionsError.textContent =
+      "Veuillez vérifier que vous avez accepté les termes et conditions";
     conditionsError.style.color = "red";
     conditionsError.style.fontSize = "10px";
     conditions.style.borderColor = "red";
     conditions.style.borderWidth = "2px";
-    return formOk === false;
+    formOk = false;
   } else {
     conditionsError.style.display = "none";
     conditions.style = "default";
   }
-  return formOk = true;
+  return formOk;
 }
 
 /* focus on next input when key 13 pressed
@@ -186,21 +203,21 @@ document.querySelectorAll('input').forEach( input => {
 }); */
 
 // function called at form submit event
-function validate(event){
-
+function validate(event) {
   // default behavior of submit event is avoided
   event.preventDefault();
-  // run checkInputs function instead
-  checkInputs();
 
   // all inputs must be true so the form can be submitted correctly
   // if so, confirmation message and red close button are displayed
-  if(formOk === true) {
-    form.style.display = "none"; 
+  if (checkInputs()) {
+    form.style.display = "none";
     confirmationMsg.style.fontSize = "30px";
     confirmationMsg.style.textAlign = "center";
+    confirmationMsg.style.margin = "20px";
 
     closeBtnRed.style.display = "block";
+    closeBtnRed.style.marginBottom = "10px";
+
     submitBtn.style.display = "none";
     confirmationMsg.style.display = "flex";
     closeBtnRed.addEventListener("click", closeModal);
@@ -210,6 +227,3 @@ function validate(event){
 
 // listening submit event on form element so function validate is run
 form.addEventListener("submit", validate);
-
-
-
